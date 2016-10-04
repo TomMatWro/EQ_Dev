@@ -9,11 +9,69 @@
         ShowMaxRestoreButton="False"
         ShowMinButton="False"
         ResizeMode="NoResize"
-        Height="400" Width="520"
+        Height="800" Width="600"
         Background="Black">
 
     <Grid Margin="60 40">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="5*"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Vertical" 
+                    Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
+            <Label
+                Content="Socks and Bonds:" Foreground="Aqua"/>
+            <StackPanel Orientation="Horizontal">
+                <ListView Name="allStocksCollecton" BorderThickness="0"
+                          Background="Black"
+                          Foreground="WhiteSmoke">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="300">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="1" Text="{Binding Type}"/>
+                                    <TextBlock Grid.Column="2" Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:C\}}"/>
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
 
+                </ListView>
+                <StackPanel Orientation="Vertical" 
+                            Width="100" 
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Price:"
+                               Foreground="Aquamarine"
+                               Width="60"/>
+                        <TextBox controls:TextBoxHelper.Watermark="price" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Quantity:" 
+                               Foreground="Aquamarine"
+                               Width="60"/>
+                        <TextBox controls:TextBoxHelper.Watermark="quantity" 
+                                 HorizontalAlignment="Right"
+                                 Width="80"/>
+                    </StackPanel>
+                    <Button Content="BUY!"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </Grid>
+    
 </controls:MetroWindow>
 
