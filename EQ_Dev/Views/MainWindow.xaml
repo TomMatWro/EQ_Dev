@@ -9,69 +9,163 @@
         ShowMaxRestoreButton="False"
         ShowMinButton="False"
         ResizeMode="NoResize"
-        Height="800" Width="600"
+        Height="700" Width="1000"
         Background="Black">
 
-    <Grid Margin="60 40">
+    <Grid Margin="50 40">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="5*"/>
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Vertical" 
-                    Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0">
-            <Label
-                Content="Socks and Bonds:" Foreground="Aqua"/>
-            <StackPanel Orientation="Horizontal">
-                <ListView Name="allStocksCollecton" BorderThickness="0"
-                          Background="Black"
-                          Foreground="WhiteSmoke">
+
+            <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Margin="0 0 0 40">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+            <Label Content="Buy Equity or Bond:" Padding="15 0 0 0"
+                       Background="CornflowerBlue"
+                       FontSize="22" 
+                       VerticalContentAlignment="Center"/>
+            
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 30"
+                                    Width="460" 
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center">
+
+                        <ComboBox Name="typeOfStock" FontSize="14"
+                                          Width="70"
+                                          Margin="0 0 10 0">
+                            <ComboBoxItem Content="Equity"/>
+                            <ComboBoxItem Content="Bond"/>
+                        </ComboBox>
+
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <Label Content="Price:"
+                                       Foreground="CornflowerBlue"
+                                   FontSize="14"
+                                       Width="40"/>
+                            <TextBox controls:TextBoxHelper.Watermark="price" 
+                                         HorizontalAlignment="Right"
+                                         HorizontalContentAlignment="Right"
+                                         VerticalContentAlignment="Center"
+                                         Width="60"
+                                        FontSize="14"/>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" Margin="10 0">
+                            <Label Content="Quantity:" 
+                                       Foreground="CornflowerBlue"
+                                       Width="65"
+                                       FontSize="14"/>
+                            <TextBox controls:TextBoxHelper.Watermark="quantity" 
+                                         HorizontalAlignment="Right"
+                                         HorizontalContentAlignment="Right"
+                                         VerticalContentAlignment="Center"
+                                         Width="60"
+                                         FontSize="14"/>
+                        </StackPanel>
+
+                        <Button Content="BUY" 
+                                    Width="80"
+                                    Margin="30 0 0 0"
+                                    FontSize="16"/>
+                    </StackPanel>
+        </Grid>
+
+        <Grid Grid.Column="0" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <Label Grid.Row="0" Content="myFund:" Padding="15 0 0 0"
+                   Background="DarkCyan"
+                   FontSize="22" 
+                   VerticalContentAlignment="Center"/>
+
+            <StackPanel Orientation="Vertical" Grid.Row="1" >
+
+                <Grid Margin="0 15 0 0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Name" HorizontalAlignment="Left" Foreground="DarkCyan" Padding="5 0 0 0" />
+                    <TextBlock Grid.Column="1" Text="Type" HorizontalAlignment="Center" Foreground="DarkCyan" />
+                    <TextBlock Grid.Column="2" Text="Price" HorizontalAlignment="Right" Foreground="DarkCyan" />
+                    <TextBlock Grid.Column="3" Text="Quantity" HorizontalAlignment="Right" Foreground="DarkCyan" />
+                    <TextBlock Grid.Column="4" Text="MarketValue" HorizontalAlignment="Right" Foreground="DarkCyan" />
+                    <TextBlock Grid.Column="5" Text="Trans.Cost" HorizontalAlignment="Right" Foreground="DarkCyan" />
+                    <TextBlock Grid.Column="6" Text="Stock weight" HorizontalAlignment="Right" Foreground="DarkCyan" />
+                </Grid>
+
+                <ListView Name="myFund" BorderThickness="0" ItemsSource="{Binding Stocks}"
+                              Background="Black"
+                              Foreground="WhiteSmoke">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel Width="300">
-                                <Grid>
+                            <StackPanel Width="585" >
+                                <Grid >
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="4*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
-                                    <TextBlock Grid.Column="1" Text="{Binding Type}"/>
-                                    <TextBlock Grid.Column="2" Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:C\}}"/>
+                                    <TextBlock Grid.Column="0" 
+                                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                                    <TextBlock Grid.Column="1" 
+                                               Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}"
+                                               HorizontalAlignment="Center"/>
+                                    <TextBlock Grid.Column="2" 
+                                               Text="{Binding Price, UpdateSourceTrigger=PropertyChanged, StringFormat=\{0:C\}}"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="3" 
+                                               Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="4" 
+                                               Text="{Binding MarketValue, UpdateSourceTrigger=PropertyChanged}"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="5" Text="{Binding TransactionCost, UpdateSourceTrigger=PropertyChanged}"
+                                               HorizontalAlignment="Right"/>
+                                    <TextBlock Grid.Column="6" 
+                                               Text="{Binding StockWeight, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0}%}"
+                                               HorizontalAlignment="Right"/>
                                 </Grid>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-
                 </ListView>
-                <StackPanel Orientation="Vertical" 
-                            Width="100" 
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Price:"
-                               Foreground="Aquamarine"
-                               Width="60"/>
-                        <TextBox controls:TextBoxHelper.Watermark="price" 
-                                 HorizontalAlignment="Right"
-                                 Width="80"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Quantity:" 
-                               Foreground="Aquamarine"
-                               Width="60"/>
-                        <TextBox controls:TextBoxHelper.Watermark="quantity" 
-                                 HorizontalAlignment="Right"
-                                 Width="80"/>
-                    </StackPanel>
-                    <Button Content="BUY!"/>
-                </StackPanel>
             </StackPanel>
-        </StackPanel>
+            
+        </Grid>
+
+        <Grid Grid.Column="1" Grid.Row="1" Margin="20 0 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label Content="Summary:" Padding="15 0 0 0"
+                   Background="IndianRed"
+                   FontSize="22" 
+                   VerticalContentAlignment="Center"/>
+
+        </Grid>
+
     </Grid>
-    
+
 </controls:MetroWindow>
 
