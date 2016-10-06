@@ -87,7 +87,6 @@ namespace EQ_Dev.Classes
             }
         }
 
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]

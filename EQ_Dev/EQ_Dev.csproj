@@ -72,6 +72,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\MyStock.cs" />
+    <Compile Include="Classes\StocksByTypeSummary.cs" />
+    <Compile Include="Commands\BuyStockCommand.cs" />
+    <Compile Include="Converters\ToleranceToColorConverter.cs" />
     <Compile Include="Enums\TypeOfStock.cs" />
     <Compile Include="Models\MyFund.cs" />
     <Compile Include="Properties\Annotations.cs" />

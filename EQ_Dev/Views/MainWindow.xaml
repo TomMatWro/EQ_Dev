@@ -2,15 +2,21 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-                      mc:Ignorable="d"
+        xmlns:converters="clr-namespace:EQ_Dev.Converters"
+        mc:Ignorable="d"
         ShowTitleBar="False"
         ShowMaxRestoreButton="False"
         ShowMinButton="False"
         ResizeMode="NoResize"
         Height="700" Width="1000"
         Background="Black">
+
+    <Window.Resources>
+        <converters:ToleranceToColorConverter x:Key="CheckToleranceColorConverter"/>
+    </Window.Resources>
 
     <Grid Margin="50 40">
         <Grid.ColumnDefinitions>
@@ -39,9 +45,10 @@
 
                         <ComboBox Name="typeOfStock" FontSize="14"
                                           Width="70"
-                                          Margin="0 0 10 0">
-                            <ComboBoxItem Content="Equity"/>
-                            <ComboBoxItem Content="Bond"/>
+                                          Margin="0 0 10 0"
+                                          SelectedValue="{Binding NewStockToMyFund.Type}"
+                                  ItemsSource="{Binding AvailableTypes}">
+
                         </ComboBox>
 
                         <StackPanel Orientation="Horizontal" Margin="10 0">
@@ -50,11 +57,15 @@
                                    FontSize="14"
                                        Width="40"/>
                             <TextBox controls:TextBoxHelper.Watermark="price" 
-                                         HorizontalAlignment="Right"
-                                         HorizontalContentAlignment="Right"
-                                         VerticalContentAlignment="Center"
-                                         Width="60"
-                                        FontSize="14"/>
+                                     Name="PriceTextBox"
+                                     Text="{Binding NewStockToMyFund.Price, UpdateSourceTrigger=PropertyChanged}"
+                                     HorizontalAlignment="Right"
+                                     HorizontalContentAlignment="Right"
+                                     VerticalContentAlignment="Center"
+                                     Width="60"
+                                     FontSize="14"
+                                     MaxLength="5"
+                                     PreviewTextInput="PreviewTectInput"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Margin="10 0">
@@ -62,18 +73,21 @@
                                        Foreground="CornflowerBlue"
                                        Width="65"
                                        FontSize="14"/>
-                            <TextBox controls:TextBoxHelper.Watermark="quantity" 
+                    <TextBox controls:TextBoxHelper.Watermark="quantity" 
+                                     Text="{Binding NewStockToMyFund.Quantity, UpdateSourceTrigger=PropertyChanged}"
                                          HorizontalAlignment="Right"
                                          HorizontalContentAlignment="Right"
                                          VerticalContentAlignment="Center"
                                          Width="60"
-                                         FontSize="14"/>
-                        </StackPanel>
+                                         FontSize="14"
+                                         MaxLength="6"
+                                         PreviewTextInput="PreviewTectInput"/>
+                </StackPanel>
 
                         <Button Content="BUY" 
                                     Width="80"
                                     Margin="30 0 0 0"
-                                    FontSize="16"/>
+                                    FontSize="16" Command="{Binding BuyButtonCommand}"/>
                     </StackPanel>
         </Grid>
 
@@ -126,7 +140,10 @@
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock Grid.Column="0" 
-                                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"/>
+                                               Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold"
+                                               Foreground="{Binding ., UpdateSourceTrigger=PropertyChanged, 
+                                               Converter ={StaticResource CheckToleranceColorConverter}}"
+                                               />
                                     <TextBlock Grid.Column="1" 
                                                Text="{Binding Type, UpdateSourceTrigger=PropertyChanged}"
                                                HorizontalAlignment="Center"/>
@@ -162,6 +179,86 @@
                    Background="IndianRed"
                    FontSize="22" 
                    VerticalContentAlignment="Center"/>
+            
+            <StackPanel Orientation="Vertical" Grid.Row="1" Margin="15 0">
+                <StackPanel Orientation="Vertical" Margin="0 10 0 0">
+                    <Label Content="Bonds:"
+                       Foreground="CornflowerBlue"
+                       FontSize="14"
+                       Padding="5 5 5 0"/>
+                    <Label Content="{Binding BondsSummary.TotalNumber}" 
+                           ContentStringFormat="Total Number: {0}" 
+                           Foreground="CornflowerBlue"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    <Label Content="{Binding BondsSummary.TotalMarketValue}" 
+                           ContentStringFormat="Total Market Value: {0}" 
+                           Foreground="CornflowerBlue"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    <Label Content="{Binding BondsSummary.TotalStockWeight}" 
+                           ContentStringFormat="Total Stock Weight: {0}" 
+                           Foreground="CornflowerBlue"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="0 10 0 0">
+                    <Label Content="Equities:"
+                       Foreground="DarkCyan"
+                       FontSize="14"
+                       Padding="5 5 5 0"/>
+                    <Label Content="{Binding EquitiesSummary.TotalNumber}" 
+                           ContentStringFormat="Total Number: {0}" 
+                           Foreground="DarkCyan"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    <Label Content="{Binding EquitiesSummary.TotalMarketValue}" 
+                           ContentStringFormat="Total Market Value: {0}" 
+                           Foreground="DarkCyan"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    <Label Content="{Binding EquitiesSummary.TotalStockWeight}" 
+                           ContentStringFormat="Total Stock Weight: {0}" 
+                           Foreground="DarkCyan"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="0 10 0 0">
+                    <Label Content="All:"
+                       Foreground="IndianRed"
+                       FontSize="14"
+                       Padding="5 5 5 0"/>
+                    <Label Content="{Binding Summary.TotalNumber}" 
+                           ContentStringFormat="Total Number: {0}" 
+                           Foreground="IndianRed"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    <Label Content="{Binding Summary.TotalMarketValue}" 
+                           ContentStringFormat="Total Market Value: {0}" 
+                           Foreground="IndianRed"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                    <Label Content="{Binding Summary.TotalStockWeight}" 
+                           ContentStringFormat="Total Stock Weight: {0}" 
+                           Foreground="IndianRed"
+                           Background="Transparent"
+                           Margin="15 0 0 0"
+                           Padding="0"/>
+                </StackPanel>
+
+
+            </StackPanel>
 
         </Grid>
 
